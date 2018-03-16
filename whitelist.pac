@@ -45465,6 +45465,15 @@ function is_ipv4(host) {
     return regex.test(host);
 }
 
+function convert_address(ipchars) {
+    var bytes = ipchars.split('.');
+    var result = ((bytes[0] & 0xff) << 24) |
+                 ((bytes[1] & 0xff) << 16) |
+                 ((bytes[2] & 0xff) <<  8) |
+                  (bytes[3] & 0xff);
+    return result;
+}
+
 function is_china_domain(domain) {
     return !!(dnsDomainIs(domain, ".cn") || dnsDomainIs(domain, ".com.cn") || dnsDomainIs(domain, ".gov.cn"));
 }
@@ -45523,7 +45532,7 @@ function FindProxyForURL(url, host) {
     }
 
     if (is_ipv4(host) === true) {
-        if (match_ips(host, subnet_ips) === true) {
+        if (match_ips(convert_address(host), subnet_ips) === true) {
             return direct;
         }
     }
