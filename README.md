@@ -4,8 +4,7 @@
 
 ## TODO
 
-1. 应该要把 blocked list 的判断移除掉，因为就算不判断也会走代理。
-2. 学习 Python 写个脚本从 [dnsmasq-china-list](https://github.com/felixonmars/dnsmasq-china-list) 获取中国大陆域名列表，生成 PAC, 再配合 travis-ci 的 cron 任务每日自动更新到 gh-pages 分支，当然要先把当前这个分支重命名为 master.
+1. 学习 Python 写个脚本从 [dnsmasq-china-list](https://github.com/felixonmars/dnsmasq-china-list) 获取中国大陆域名列表，生成 PAC, 再配合 travis-ci 的 cron 任务每日自动更新到 gh-pages 分支，当然要先把当前这个分支重命名为 master.
 
 ## 致谢
 
