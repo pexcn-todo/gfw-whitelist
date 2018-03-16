@@ -45442,27 +45442,21 @@ var blocked_domains = {
 };
 
 var subnet_ips = [
-[0, 4278190080],
-[167772160, 4278190080],
-[1681915904, 4290772992],
-[2130706432, 4278190080],
-[2851995648, 4294901760],
-[2886729728, 4293918720],
-[3221225472, 4294967288],
-[3221225984, 4294967040],
-[3227017984, 4294967040],
-[3232235520, 4294901760],
-[3323068416, 4294836224],
-[3325256704, 4294967040],
-[3405803776, 4294967040],
-[3758096384, 3758096384]
+0,1,                   // 0.0.0.0
+167772160,184549376,   // 10.0.0.0/8
+2886729728,2887778304, // 172.16.0.0/12
+3232235520,3232301056, // 192.168.0.0/16
+1681915904,1686110208, // 100.64.0.0/10
+2130706432,2130706688  // 127.0.0.0/24
 ]
 
 var hasOwnProperty = Object.hasOwnProperty;
 
 function is_ipv4(host) {
     var regex = /^\d+\.\d+\.\d+\.\d+$/g;
-    return regex.test(host);
+    if (regex.test(host)) {
+        return true;
+    }
 }
 
 function convert_address(ipchars) {
@@ -45470,7 +45464,7 @@ function convert_address(ipchars) {
     var result = ((bytes[0] & 0xff) << 24) |
                  ((bytes[1] & 0xff) << 16) |
                  ((bytes[2] & 0xff) <<  8) |
-                  (bytes[3] & 0xff);
+                 (bytes[3] & 0xff);
     return result;
 }
 
@@ -45493,22 +45487,12 @@ function match_domains(domain, domains) {
     }
 }
 
-function match_ips(ip, ips) {
-    var left = 0;
-    var right = ips.length;
-    do {
-        var mid = Math.floor((left + right) / 2);
-        var ipf = (ip & ips[mid][1]) >>> 0;
-        var m = (ips[mid][0] & ips[mid][1]) >>> 0;
-        if (ipf == m) {
+function match_subnet_ips(ip, ips) {
+    for (var i = 0; i < 12; i += 2) {
+        if (ips[i] <= ip && ip < ips[i + 1]) {
             return true;
-        } else if (ipf > m) {
-            left = mid + 1;
-        } else {
-            right = mid;
         }
-    } while (left + 1 <= right);
-    return false;
+    }
 }
 
 function FindProxyForURL(url, host) {
@@ -45532,7 +45516,8 @@ function FindProxyForURL(url, host) {
     }
 
     if (is_ipv4(host) === true) {
-        if (match_ips(convert_address(host), subnet_ips) === true) {
+        var ip = convert_address(host);
+        if (match_subnet_ips(ip, subnet_ips) === true) {
             return direct;
         }
     }
