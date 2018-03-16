@@ -45475,13 +45475,18 @@ function is_china_domain(domain) {
 function match_domains(domain, domains) {
     var suffix;
     var pos = domain.lastIndexOf('.');
-    for (;;) {
+    pos = domain.lastIndexOf('.', pos - 1);
+    while(1) {
+        if (pos <= 0) {
+            if (hasOwnProperty.call(domains, domain)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
         suffix = domain.substring(pos + 1);
         if (hasOwnProperty.call(domains, suffix)) {
             return true;
-        }
-        if (pos <= 0) {
-            return false;
         }
         pos = domain.lastIndexOf('.', pos - 1);
     }
