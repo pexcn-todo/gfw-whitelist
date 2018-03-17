@@ -40522,6 +40522,9 @@ function is_ipv4(host) {
 }
 
 function convert_address(ipchars) {
+    if (ipchars.indexOf(':') !== -1) {
+        ipchars = ipchars.split(':')[0];
+    }
     var bytes = ipchars.split('.');
     var result = ((bytes[0] & 0xff) << 24) |
                  ((bytes[1] & 0xff) << 16) |
