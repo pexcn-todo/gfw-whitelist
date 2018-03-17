@@ -40515,7 +40515,7 @@ var subnet_ips = [
 var hasOwnProperty = Object.hasOwnProperty;
 
 function is_ipv4(host) {
-    var regex = /^\d+\.\d+\.\d+\.\d+$/g;
+    var regex = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(:([0-9]|[1-9]\d|[1-9]\d{2}|[1-9]\d{3}|[1-5]\d{4}|6[0-4]\d{3}|65[0-4]\d{2}|655[0-2]\d|6553[0-5]))?$/g;
     if (regex.test(host)) {
         return true;
     }
